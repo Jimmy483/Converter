@@ -19,23 +19,34 @@ public class Main implements ActionListener {
     JTextField textAmount = new JTextField();
     JComboBox jComboBox=new JComboBox();
     JComboBox jBox=new JComboBox();
+    JLabel labelResult=new JLabel();
 
 
     public Main(){
         JFrame jFrame=new JFrame();
+        Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+        double x=(dim.getWidth()/2.4);
+        double y=dim.getHeight()/3;
+        System.out.println(x+y);
+        jFrame.setLocation((int) x,(int) y);
+        //jFrame.pack();
+        //jFrame.setLocationRelativeTo(null);
         jFrame.setTitle("Converter");
         jFrame.setSize(300,350);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel jPanel=new JPanel();
+        jPanel.setBackground(Color.GRAY);
         jFrame.add(jPanel);
 
         jPanel.setLayout(null);
         JLabel labelHead=new JLabel();
         labelHead.setText("Currency Converter");
+        labelHead.setForeground(Color.white);
         labelHead.setBounds(80,40,150,30);
         jPanel.add(labelHead);
 
         JLabel labelAmount = new JLabel();
+        labelAmount.setForeground(Color.white);
         labelAmount.setText("Amount ");
         labelAmount.setBounds(30,90,60,20);
         jPanel.add(labelAmount);
@@ -76,6 +87,7 @@ public class Main implements ActionListener {
 
         JLabel labelTo=new JLabel();
         labelTo.setBounds(125,160,70,40);
+        labelTo.setForeground(Color.BLUE);
         labelTo.setText("TO");
         labelTo.setFont(new Font("Arial",Font.BOLD,20));
         jPanel.add(labelTo);
@@ -91,11 +103,10 @@ public class Main implements ActionListener {
         jBox.addActionListener(this);
         jPanel.add(jBox);
 
-        JTextField textResult=new JTextField();
-        textResult.setBounds(95,250,100,20);
-        textResult.setText("0");
-        textResult.setEnabled(false);
-        jPanel.add(textResult);
+
+        labelResult.setBounds(95,250,100,20);
+        labelResult.setText("0");
+        jPanel.add(labelResult);
 
 //        JButton jButton=new JButton();
 //        jButton.setBounds(95,280,100,30);
@@ -118,11 +129,11 @@ public class Main implements ActionListener {
     public double convert(double rawAmount,int idFirst,int idSecond){
         double convertedAmount=0;
         //double nonConvertedAmount=rawAmount;
-        double[] currencyValue={100,90,1,1.11,0.1};
+        double[] currencyValue={1,100,90,1.11,0.1};
         double rate=currencyValue[idFirst]/currencyValue[idSecond];
 
         convertedAmount=rawAmount*rate;
-        System.out.println(convertedAmount);
+        //System.out.println(convertedAmount);
 
         return convertedAmount;
 
@@ -138,9 +149,18 @@ public class Main implements ActionListener {
     }
 
     public void check(){
+        if(jComboBox.getSelectedIndex()<0){
+            jComboBox.setSelectedIndex(0);
+        }
+        if(jBox.getSelectedIndex()<0){
+            jBox.setSelectedIndex(0);
+        }
         if(jComboBox.getSelectedIndex()>=0 && jBox.getSelectedIndex()>=0 && !textAmount.getText().equals("") ) {
 
-            convert(Double.parseDouble(textAmount.getText()), jComboBox.getSelectedIndex(), jBox.getSelectedIndex());
+            double amount=convert(Double.parseDouble(textAmount.getText()), jComboBox.getSelectedIndex(), jBox.getSelectedIndex());
+            labelResult.setText(String.valueOf(amount));
+            //textResult.setText(Double.toString(amount));
+            ;
         }
     }
 }
