@@ -8,9 +8,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.TextAction;
 import javax.swing.text.View;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.TextListener;
+import java.awt.event.*;
 import java.net.http.WebSocket;
 
 public class Main implements ActionListener {
@@ -47,12 +45,35 @@ public class Main implements ActionListener {
 
         JLabel labelAmount = new JLabel();
         labelAmount.setForeground(Color.white);
+
         labelAmount.setText("Amount ");
         labelAmount.setBounds(30,90,60,20);
         jPanel.add(labelAmount);
 
 
         textAmount.setBounds(80,90,120,20);
+        textAmount.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if(Character.isAlphabetic(e.getKeyChar())){
+                    Toolkit.getDefaultToolkit().beep();
+                    e.consume();
+                }if(e.getKeyChar()==KeyEvent.VK_BACK_SPACE && textAmount.getText().equals("")){
+                    labelResult.setText("0");
+                }
+//                char c=e.getKeyChar();
+//                if(!(c>=0 || c<=9 || c==KeyEvent.VK_BACK_SPACE || c==KeyEvent.VK_DELETE)){
+//                    Toolkit.getDefaultToolkit().beep();
+//                    e.consume();
+//                };
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+            }
+        });
         textAmount.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
